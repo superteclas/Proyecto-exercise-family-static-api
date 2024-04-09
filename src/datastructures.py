@@ -6,7 +6,7 @@ class FamilyStructure:
         self._next_id = 1
         self._members = []
 
-    # This method generates a unique 'id' when adding members into the list (you shouldn't touch this function)
+    
     def _generate_id(self):
         generated_id = self._next_id
         self._next_id += 1
@@ -35,7 +35,7 @@ class FamilyStructure:
             
         return None
 
-    # This method is done, it returns a list with all the family members
+    
     def get_all_members(self):
         return self._members
 

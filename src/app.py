@@ -1,6 +1,4 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
+
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -37,50 +35,59 @@ jackson_family.add_member(John)
 jackson_family.add_member(Jane)
 jackson_family.add_member(Jimmy)
 
-# Handle/serialize errors like a JSON object
+
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
+    return jsonify(error.to_dict()), error.status_code
 
 # Generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
 
+
 @app.route('/members', methods=['GET'])
 def get_all_members():
     members = jackson_family.get_all_members()
     return jsonify(members), 200
 
+
 @app.route('/member/<int:id>', methods=['GET'])
 def get_single_member(id):
     member = jackson_family.get_member(id)
     if member:
-        return jsonify(member), 200
+        return jsonify({
+            "name": f"{member['first_name']} {member['last_name']}",
+            "id": member['id'],
+            "age": member['age'],
+            "lucky_numbers": member['lucky_numbers']
+        }), 200
     else:
-        return jsonify({"error": "Member not found"}), 400
+        return jsonify({"error": "Member not found"}), 404
+
+
 
 @app.route('/member', methods=['POST'])
 def create_member():
     member = request.json
-    if member:
-        jackson_family.add_member(member)
-        return jsonify({"message": "Member created successfully"}), 200
-    else:
-        return jsonify({"error": "Invalid data"}), 400
+    print("added", member)
+    jackson_family.add_member(member)
+    if member is not None:
+        return "member created", 200
+
 
 @app.route('/member/<int:id>', methods=['DELETE'])
 def delete_single_member(id):
     member = jackson_family.get_member(id)
+ 
     if member:
         jackson_family.delete_member(id)
-        return jsonify({"done": True}), 200
+        return jsonify({"message": f"Member deleted successfully: {member}"}), 200
     else:
         return jsonify({"error": "Member not found"}), 404
 
-# This only runs if `$ python src/app.py` is executed
+
+
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
