@@ -49,7 +49,7 @@ def add_members():
 
 
 
-""" @app.route('/member/<int:id>', methods=['DELETE'])
+@app.route('/member/<int:id>', methods=['DELETE'])
 def delete_single_member(id):
     member = jackson_family.get_member(id)
  
@@ -57,8 +57,8 @@ def delete_single_member(id):
         jackson_family.delete_member(id)
         return jsonify({"message": f"Member deleted successfully: {member}"}), 200
     else:
-        return jsonify({"error": "Member not found"}), 404 """
-    
+        return jsonify({"error": "Member not found"}), 404
+
 
 # GET /members
 
