@@ -41,9 +41,9 @@ def get_member(id):
 
 
 @app.route('/member', methods=['POST'])
-def create_member():
+def add_members():
     member = request.json
-    jackson_family.get_member(member)
+    jackson_family.add_member(member)
     return jsonify({"message": "Member created successfully"}), 200
 
 
