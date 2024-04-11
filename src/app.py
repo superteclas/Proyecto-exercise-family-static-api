@@ -51,26 +51,20 @@ def add_members():
 
 @app.route('/member/<int:id>', methods=['DELETE'])
 def delete_single_member(id):
-    try:
-        member = jackson_family.get_member(id)
+    member = jackson_family.get_member(id)
  
-        if member:
-            jackson_family.delete_member(id)
-            return jsonify({"message": f"Member deleted successfully: {member}"}), 200
-        else:
-            return jsonify({"error": "Member not found"}), 400
-    except Exception as e:
-        return jsonify({"error": "Server Error", "message": str(e)}), 500
+    if member:
+        jackson_family.delete_member(id)
+        return jsonify({"done": True, "message": f"Member deleted successfully: {member}"}), 200
+    else:
+        return jsonify({"done": False, "error": "Member not found"}), 404
+
 
 # GET /members
 
 # status_code: 200 if success. 400 if bad request (wrong info). 500 if the server encounters an error
 
-# RESPONSE BODY (content-type: application/json):
 
-# []  <!--- List of members -->
-
-# this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
