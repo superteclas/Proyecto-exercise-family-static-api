@@ -49,8 +49,15 @@ class FamilyStructure:
 
 
     def add_member(self, member):
-        member["id"] = self._generateId()
+        # fill this method and update the return
+        # print(member["id"])
+
+        for elem in self._members:
+            if elem['id'] == member['id']:
+                return ({'msg': 'Member already exist'}), 409
         self._members.append(member)
+        return (self._members), 200
+
 
     def delete_member(self, id):
         # fill this method and update the return
@@ -60,16 +67,10 @@ class FamilyStructure:
                 return {"done": True}
 
     def get_member(self, id):
-     for member in self._members:
-        if member["id"] == id:
-            return {
-                "id": member["id"],
-                "name": f"{member['first_name']} {member['last_name']}",
-                "age": member["age"],
-                "lucky_numbers": member["lucky_numbers"]
-            }
-     return member
-
+        # fill this method and update the return
+        for member in self._members:
+            if member["id"] == id:
+                return member
 
 
 

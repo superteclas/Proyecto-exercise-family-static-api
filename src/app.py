@@ -32,19 +32,28 @@ def get_members():
 
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
+    if members == []:
+        return jsonify({"msg":"The request body is empty"}), 404
     return jsonify(members), 200
+
+    
 
 @app.route('/member/<int:id>', methods=['GET'])
 def get_member(id):
     members = jackson_family.get_member(id)
+    if members == []:
+        return jsonify({"msg":"The request body is empty"}), 404
     return jsonify(members), 200
 
 
+
 @app.route('/member', methods=['POST'])
-def add_members():
-    member = request.json
-    jackson_family.add_member(member)
-    return jsonify({"message": "Member created successfully"}), 200
+def add_member():
+    request_body = request.json
+    if not request_body:
+        return jsonify({'msg': 'Bad Request'}), 400
+    members = jackson_family.add_member(request_body)
+    return (members)
 
 
 
@@ -60,12 +69,13 @@ def delete_single_member(id):
         return jsonify({"done": False, "error": "Member not found"}), 404
 
 
-# GET /members
 
-# status_code: 200 if success. 400 if bad request (wrong info). 500 if the server encounters an error
 
 
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
 
+
+
+# status_code: 200 if success. 400 if bad request (wrong info). 500 if the server encounters an error
