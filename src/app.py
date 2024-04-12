@@ -20,13 +20,13 @@ jackson_family = FamilyStructure("Jackson")
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoints
+# GENERA EL SITIOWEB CON LOS ENDPOINTS
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
 
 
-
+#ENDPOINT GET PARA TODOS LOS MIEMBROS
 @app.route('/members', methods=['GET'])
 def get_members():
     members = jackson_family.get_all_members()
@@ -35,7 +35,7 @@ def get_members():
     return jsonify(members), 200
 
     
-
+#ENDPOINT GET PARA UN MIEMBRO ESPECIFICO
 @app.route('/member/<int:id>', methods=['GET'])
 def get_member(id):
     member = jackson_family.get_member(id)
@@ -44,7 +44,7 @@ def get_member(id):
     return jsonify(member), 200
 
 
-
+#ENDPOINT POST PARA AGREGAR UN MIEMBRO
 @app.route('/member', methods=['POST'])
 def add_member():
     request_body = request.json
@@ -55,7 +55,7 @@ def add_member():
 
 
 
-
+#ENDPOINT DELETE PARA BORRAR UN MIEMBRO
 @app.route('/member/<int:id>', methods=['DELETE'])
 def delete_single_member(id):
     member = jackson_family.get_member(id)
@@ -69,7 +69,7 @@ def delete_single_member(id):
 
 
 
-
+#SE ENVIA A PUERTO 3000
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
