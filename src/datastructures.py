@@ -47,30 +47,28 @@ class FamilyStructure:
         self._next_id += 1
         return generated_id
 
-
+   # METODO PARA AGREGAR UN MIEMBRO
+        
     def add_member(self, member):
-        # fill this method and update the return
-        # print(member["id"])
-
-        for elem in self._members:
-            if elem['id'] == member['id']:
-                return ({'msg': 'Member already exist'}), 409
+        if any(elem['id'] == member['id'] for elem in self._members):
+            return {'msg': 'Member already exists'}, 409
         self._members.append(member)
-        return (self._members), 200
+        return self._members, 200
 
-
+# METODO PARA BORRAR UN MIEMBRO
     def delete_member(self, id):
-        # fill this method and update the return
         for member in self._members:
             if member["id"] == id:
                 self._members.remove(member)
                 return {"done": True}
+        return {"done": False}
 
+# METODO PARA ACTUALIZAR UN MIEMBRO
     def get_member(self, id):
-        # fill this method and update the return
         for member in self._members:
             if member["id"] == id:
                 return member
+        return None
 
 
 
