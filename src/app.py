@@ -29,21 +29,19 @@ def sitemap():
 
 @app.route('/members', methods=['GET'])
 def get_members():
-
-    # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
-    if members == []:
-        return jsonify({"msg":"The request body is empty"}), 404
+    if not members:
+        return jsonify({"msg": "The request body is empty"}), 404
     return jsonify(members), 200
 
     
 
 @app.route('/member/<int:id>', methods=['GET'])
 def get_member(id):
-    members = jackson_family.get_member(id)
-    if members == []:
-        return jsonify({"msg":"The request body is empty"}), 404
-    return jsonify(members), 200
+    member = jackson_family.get_member(id)
+    if not member:
+        return jsonify({"msg": "Member not found"}), 404
+    return jsonify(member), 200
 
 
 
@@ -52,8 +50,8 @@ def add_member():
     request_body = request.json
     if not request_body:
         return jsonify({'msg': 'Bad Request'}), 400
-    members = jackson_family.add_member(request_body)
-    return (members)
+    member = jackson_family.add_member(request_body)
+    return jsonify(member), 200
 
 
 
@@ -78,4 +76,3 @@ if __name__ == '__main__':
 
 
 
-# status_code: 200 if success. 400 if bad request (wrong info). 500 if the server encounters an error
